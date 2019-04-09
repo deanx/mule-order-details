@@ -5,6 +5,10 @@
       <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
 type: integer]]></types:shape>
     </types:type>
+    <types:type name="orderItem" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#77ae66ff-c7fb-42a9-9217-ea02e1877418">
     <types:processor-declaration>
@@ -15,4 +19,5 @@ type: integer]]></types:shape>
       </types:input-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#0b39f092-5fd0-4238-9751-567ea32dbcb1"/>
 </types:mule>

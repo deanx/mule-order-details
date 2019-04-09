@@ -37,8 +37,9 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\orders\(orderId):Router">
-        <logger level="INFO" doc:name="Pre-logging" doc:id="77ae66ff-c7fb-42a9-9217-ea02e1877418" message="looking for id #[attributes.uriParams.orderId]"/>
+        <set-variable value="#[attributes.uriParams.orderId]" doc:name="orderId" doc:id="6440dba4-b7c6-46d0-80c4-bf0ee9ef8de4" variableName="orderId"/>
+		<logger level="INFO" doc:name="Pre-logging" doc:id="77ae66ff-c7fb-42a9-9217-ea02e1877418" message="looking for id #[vars.orderId]"/>
 		<flow-ref doc:name="get:\orders\(orderId)-impl" doc:id="270b1d92-2407-4f48-978b-751daadfddf4" name="get:\orders\(orderId)-impl"/>
-		<logger level="INFO" doc:name="Post-logging" doc:id="82d41d4b-9408-489d-9694-4ff7f21de0b1" message="ok for #[attributes.uriParams.orderId]"/>
+		<logger level="INFO" doc:name="Post-logging" doc:id="82d41d4b-9408-489d-9694-4ff7f21de0b1" message="ok for #[vars.orderId]"/>
     </flow>
 </mule>
