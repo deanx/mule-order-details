@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 	<configuration doc:name="Configuration" doc:id="de942608-7c15-4bda-9b9a-a7bb41278f25" defaultErrorHandler-ref="globalError_Handler" />
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0e62915f-403f-432f-b969-a83bc5b4c26b" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
@@ -15,6 +17,12 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
 	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="fe6840a0-8e02-4ee5-a20d-ff158ebbd796" name="Router" raml="api/orders-mb-shop.raml" />
 	<configuration-properties doc:name="Configuration properties" doc:id="d92f6e2b-b23c-426b-9fc2-e6d25717ca6e" file="${mule.env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="def36a9c-9c90-4dc5-bcea-8d93a6a7d283" name="mule.env" value="dev" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="70f5d1b9-640d-468a-bbd2-50c8cce62177" >
+		<db:my-sql-connection host="${mysql.host}" port="${mysql.port}" user="${mysql.username}" database="${mysql.database}" password="${secure::mysql.password}"/>
+	</db:config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3b63f62d-4068-4681-9bf5-8cef8d150850" file="${mule.env}-secure-properties.yaml" key="${mule.vault.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
 	<error-handler name="globalError_Handler" doc:id="defdf022-086e-4c12-ad13-2b60eb5fe5a1" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="09dc9261-1692-413c-9883-9928c3795fe7" type="APIKIT:BAD_REQUEST" >
 			<ee:transform doc:name="Transform Message" doc:id="cabec2d5-6cd4-4133-9a34-ac3b3a0cf3c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
