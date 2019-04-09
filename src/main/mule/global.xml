@@ -13,6 +13,8 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
 	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="fe6840a0-8e02-4ee5-a20d-ff158ebbd796" name="Router" raml="api/orders-mb-shop.raml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="d92f6e2b-b23c-426b-9fc2-e6d25717ca6e" file="${mule.env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="def36a9c-9c90-4dc5-bcea-8d93a6a7d283" name="mule.env" value="dev" />
 	<error-handler name="globalError_Handler" doc:id="defdf022-086e-4c12-ad13-2b60eb5fe5a1" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="09dc9261-1692-413c-9883-9928c3795fe7" type="APIKIT:BAD_REQUEST" >
 			<ee:transform doc:name="Transform Message" doc:id="cabec2d5-6cd4-4133-9a34-ac3b3a0cf3c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >

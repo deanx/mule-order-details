@@ -1,0 +1,6 @@
+mysql:
+  host: "test-mb.cww57cq7z82t.eu-central-1.rds.amazonaws.com"
+  port: "3306"
+  username: "root"
+  database: "mb_shop"
+  
