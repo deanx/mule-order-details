@@ -1,0 +1,26 @@
+#%RAML 1.0 DataType
+type: object
+displayName: Order object
+properties:
+  orderId: 
+    description: Order unique identifier
+    type: integer
+    required: true
+    minimum: 1
+    example: 4
+  placementDate:
+    displayName: Placement Date
+    description: Date when the order has been placed
+    type: date-only
+    required: true
+    example: 1999-01-31
+  customerName:
+    displayName: Customer Name
+    type: string
+    required: true
+    maxLength: 200
+    minLength: 2
+    example: John Doe
+  items: 
+    type: array
+    items: !include order-item.raml
