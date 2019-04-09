@@ -10,8 +10,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
-	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="b536b387-20b0-4aad-991b-bd0fe7475add" />
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	<configuration doc:name="Configuration" doc:id="de942608-7c15-4bda-9b9a-a7bb41278f25" defaultErrorHandler-ref="globalError_Handler" />
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0e62915f-403f-432f-b969-a83bc5b4c26b" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
@@ -25,6 +25,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="3b63f62d-4068-4681-9bf5-8cef8d150850" file="${mule.env}-secure-properties.yaml" key="${mule.vault.key}" >
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
+	<validation:config name="Validation_Config" doc:name="Validation Config" doc:id="62dce7c2-b4ce-4d09-90c4-f7ed361c3623" />
 	<error-handler name="globalError_Handler" doc:id="defdf022-086e-4c12-ad13-2b60eb5fe5a1" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="09dc9261-1692-413c-9883-9928c3795fe7" type="APIKIT:BAD_REQUEST" >
 			<ee:transform doc:name="Transform Message" doc:id="cabec2d5-6cd4-4133-9a34-ac3b3a0cf3c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
@@ -39,8 +40,8 @@ output application/json
 				</ee:variables>
 			</ee:transform>
 		</on-error-propagate>
-		 <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+		 <on-error-propagate type="APIKIT:NOT_FOUND, APP:NOT_FOUND" enableNotifications="true" logException="true">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="62bd71fe-f112-481a-b7d3-852f49577d62">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -48,7 +49,7 @@ output application/json
 {message: "Resource not found"}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>

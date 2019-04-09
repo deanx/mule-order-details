@@ -16,9 +16,9 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 			<db:sql>select * from orders where id= :orderId</db:sql>
 			<db:input-parameters><![CDATA[#[orderId: vars.orderId]]]></db:input-parameters>
 		</db:select>
-		<validation:is-empty-collection doc:name="Is empty collection" doc:id="3a69a2c1-4c10-45a6-b024-265e8ee47e15" config-ref="Validation_Config" message="Not found">
-			<error-mapping sourceType="VALIDATION:NOT_EMPTY_COLLECTION" targetType="APP:NOT_FOUND" />
-		</validation:is-empty-collection>
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="7f8276bc-cd10-4117-a99d-3b4762099eba" config-ref="Validation_Config" message="Not found">
+			<error-mapping sourceType="VALIDATION:EMPTY_COLLECTION" targetType="APP:NOT_FOUND" />
+		</validation:is-not-empty-collection>
 	</sub-flow>
 	<sub-flow name="get-order-items" doc:id="841062f3-0a09-4872-a8b6-1d830c7df918" >
 		<set-variable value="#[[]]" doc:name="initilize items" doc:id="844c93b1-e8de-4160-baf9-b9eb88d38fc4" variableName="items" />
