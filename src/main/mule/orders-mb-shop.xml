@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
     
     <flow name="orders-mb-shop-main">
-        <http:listener config-ref="orders-mb-shop-httpListenerConfig" path="/api/*">
+        <http:listener path="/api/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="orders-mb-shop-config" />
+        <apikit:router config-ref="Router"/>
     </flow>
     <flow name="orders-mb-shop-console">
-        <http:listener config-ref="orders-mb-shop-httpListenerConfig" path="/console/*">
+        <http:listener path="/console/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
-                <http:body>#[payload]</http:body>
-                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+                <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
-        <apikit:console config-ref="orders-mb-shop-config" />
+        <apikit:console config-ref="Router"/>
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
@@ -40,12 +36,9 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\orders\(orderId):orders-mb-shop-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="orderId">attributes.uriParams.orderId</ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <logger level="INFO" message="get:\orders\(orderId):orders-mb-shop-config" />
+    <flow name="get:\orders\(orderId):Router">
+        <logger level="INFO" doc:name="Pre-logging" doc:id="77ae66ff-c7fb-42a9-9217-ea02e1877418" message="looking for id #[attributes.uriParams.orderId]"/>
+		<flow-ref doc:name="get:\orders\(orderId)-impl" doc:id="270b1d92-2407-4f48-978b-751daadfddf4" name="get:\orders\(orderId)-impl"/>
+		<logger level="INFO" doc:name="Post-logging" doc:id="82d41d4b-9408-489d-9694-4ff7f21de0b1" message="ok for #[attributes.uriParams.orderId]"/>
     </flow>
 </mule>

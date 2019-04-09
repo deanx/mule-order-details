@@ -5,15 +5,17 @@
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-<http:listener-config name="orders-mb-shop-httpListenerConfig">
-        <http:listener-connection host="0.0.0.0" port="8081" />
-    </http:listener-config>
-    <apikit:config name="orders-mb-shop-config" raml="orders-mb-shop.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
 	<configuration doc:name="Configuration" doc:id="de942608-7c15-4bda-9b9a-a7bb41278f25" defaultErrorHandler-ref="globalError_Handler" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0e62915f-403f-432f-b969-a83bc5b4c26b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="fe6840a0-8e02-4ee5-a20d-ff158ebbd796" name="Router" raml="api/orders-mb-shop.raml" />
 	<error-handler name="globalError_Handler" doc:id="defdf022-086e-4c12-ad13-2b60eb5fe5a1" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="09dc9261-1692-413c-9883-9928c3795fe7" type="APIKIT:BAD_REQUEST" >
-			<ee:transform doc:name="Copy_of_Transform Message" doc:id="cabec2d5-6cd4-4133-9a34-ac3b3a0cf3c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:transform doc:name="Transform Message" doc:id="cabec2d5-6cd4-4133-9a34-ac3b3a0cf3c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
