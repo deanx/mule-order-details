@@ -8,8 +8,19 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 	
 	<sub-flow name="get:\orders\(orderId)-impl" doc:id="2043fa59-4b45-433c-aa1f-31e66a21c95b" >
-		<flow-ref doc:name="get-order-by-id" doc:id="bbe09247-a970-4341-9396-f0126aba7a69" name="get-order-by-id" target="order"/>
-		<flow-ref doc:name="get-order-items" doc:id="e1f1bbaa-0875-4dbd-ae07-bef74f8fb0cb" name="get-order-items" target="order-items"/>
+		<flow-ref doc:name="get-order-by-id" doc:id="bbe09247-a970-4341-9396-f0126aba7a69" name="get-order-by-id" target="order" targetValue="#[payload[0]]"/>
+		<flow-ref doc:name="get-order-items" doc:id="e1f1bbaa-0875-4dbd-ae07-bef74f8fb0cb" name="get-order-items" target="orderItems"/>
+		<ee:transform doc:name="Generate output" doc:id="c061d4dc-7683-43ba-8370-dfd08e78e444" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import mergeWith from dw::core::Objects
+---
+vars.order ++ {
+	items: vars.orderItems
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</sub-flow>
 	<sub-flow name="get-order-by-id" doc:id="80614411-2af3-42b0-a806-414f369c377a" >
 		<db:select doc:name="get order by id" doc:id="f1253b22-5795-4e9f-b602-6a65d119428f" config-ref="Database_Config" maxRows="1">
