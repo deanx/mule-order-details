@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0e62915f-403f-432f-b969-a83bc5b4c26b" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="fe6840a0-8e02-4ee5-a20d-ff158ebbd796" name="Router" raml="api/orders-mb-shop.raml" />
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="fe6840a0-8e02-4ee5-a20d-ff158ebbd796" name="Router" raml="api/orders-mb-shop.raml" queryParamsStrictValidation="true"/>
 	<configuration-properties doc:name="Configuration properties" doc:id="d92f6e2b-b23c-426b-9fc2-e6d25717ca6e" file="${mule.env}.yaml" />
 	<global-property doc:name="Global Property" doc:id="def36a9c-9c90-4dc5-bcea-8d93a6a7d283" name="mule.env" value="dev" />
 	<db:config name="Database_Config" doc:name="Database Config" doc:id="70f5d1b9-640d-468a-bbd2-50c8cce62177" >

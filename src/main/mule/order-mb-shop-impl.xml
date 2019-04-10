@@ -49,14 +49,18 @@ vars.order ++ {
 					<ee:set-variable variableName="items" ><![CDATA[%dw 2.0
 output application/java
 ---
-vars.items + {
-	itemId: vars.item.id,
-	item: vars.item.name,
-	cost: vars.item.cost,
+if(sizeOf(vars.item) > 0) 
+(vars.items + {
+	itemId: vars.item[0].id,
+	item: vars.item[0].name,
+	cost: vars.item[0].cost,
 	quantity: payload.item_count
-}]]></ee:set-variable>
+})
+else vars.items
+]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
 		</foreach>
+		<set-payload value="#[vars.items]" doc:name="Set Payload" doc:id="d652ab88-dd8e-4026-a53f-dc270e498267" />
 	</sub-flow>
 </mule>
