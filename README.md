@@ -11,7 +11,7 @@
     - **ClientId**: 1044bd247e6744f99eeff49852c76e81
     - **ClientSecret**: df7cCB13dE7743d6A4454423D830d1a7
   - To avoid being cached
-    - set the ***Cache-Control*** to "no-cache"
+    - set the ***Cache-Control*** header to "no-cache"
 
 ### Solution
 
