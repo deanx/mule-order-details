@@ -1,7 +1,7 @@
 # Order Mule API
 
 ### To call the API from CloudHub:
-  - [CloudHub console]
+  - go to [CloudHub console]
   - fill orderId parameter with the value 1 or 2
   -- Any integer value is accepted, but we have only these 2 order in the database
   - Fullfill headers
