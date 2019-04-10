@@ -1,0 +1,17 @@
+#%RAML 1.0 Library
+traits:
+  client-id-required:
+    headers:
+      client_id:
+        type: string
+        required: true
+        description: Client Application Identifier
+      client_secret:
+        type: string
+        required: true
+        description: Client Application Secret
+    responses:
+      401:
+        description: Unauthorized or invalid client application credentials
+      500:
+        description: Bad response from authorization server, or WSDL SOAP Fault error

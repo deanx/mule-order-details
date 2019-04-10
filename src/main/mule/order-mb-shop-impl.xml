@@ -1,10 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	
 	<sub-flow name="get:\orders\(orderId)-impl" doc:id="2043fa59-4b45-433c-aa1f-31e66a21c95b" >
-		<logger level="INFO" doc:name="Logger" doc:id="aa273986-161d-4588-a97a-c8e30065764a" />
+		<flow-ref doc:name="get-order-by-id" doc:id="bbe09247-a970-4341-9396-f0126aba7a69" name="get-order-by-id" target="order" targetValue="#[payload[0]]"/>
+		<flow-ref doc:name="get-order-items" doc:id="e1f1bbaa-0875-4dbd-ae07-bef74f8fb0cb" name="get-order-items" target="orderItems"/>
+		<ee:transform doc:name="Generate output" doc:id="c061d4dc-7683-43ba-8370-dfd08e78e444" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import mergeWith from dw::core::Objects
+---
+vars.order ++ {
+	items: vars.orderItems
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="get-order-by-id" doc:id="80614411-2af3-42b0-a806-414f369c377a" >
+		<db:select doc:name="get order by id" doc:id="f1253b22-5795-4e9f-b602-6a65d119428f" config-ref="Database_Config" maxRows="1">
+			<db:sql>select * from orders where id= :orderId</db:sql>
+			<db:input-parameters><![CDATA[#[orderId: vars.orderId]]]></db:input-parameters>
+		</db:select>
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="7f8276bc-cd10-4117-a99d-3b4762099eba" config-ref="Validation_Config" message="Not found">
+			<error-mapping sourceType="VALIDATION:EMPTY_COLLECTION" targetType="APP:NOT_FOUND" />
+		</validation:is-not-empty-collection>
+	</sub-flow>
+	<sub-flow name="get-order-items" doc:id="841062f3-0a09-4872-a8b6-1d830c7df918" >
+		<set-variable value="#[[]]" doc:name="initilize items" doc:id="844c93b1-e8de-4160-baf9-b9eb88d38fc4" variableName="items" />
+		<db:select doc:name="get order items" doc:id="b030fd95-3570-454c-b9f7-a0768091ee36" config-ref="Database_Config">
+			<db:sql >select * from order_items where order_id= :orderId</db:sql>
+			<db:input-parameters ><![CDATA[#[orderId: vars.orderId]]]></db:input-parameters>
+		</db:select>
+		<foreach doc:name="For Each Order Item" doc:id="40770621-1868-4ba4-8368-0d9b7989257f" >
+			<db:select doc:name="get item details" doc:id="737eaa22-0ad0-4106-a798-7423da6bb8d4" config-ref="Database_Config" target="item">
+				<db:sql >select * from items where id=:item_id</db:sql>
+				<db:input-parameters ><![CDATA[#[item_id: payload.item_id]]]></db:input-parameters>
+			</db:select>
+			<ee:transform doc:name="Add item to items array" doc:id="0b39f092-5fd0-4238-9751-567ea32dbcb1" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="items" ><![CDATA[%dw 2.0
+output application/java
+---
+if(sizeOf(vars.item) > 0) 
+(vars.items + {
+	itemId: vars.item[0].id,
+	item: vars.item[0].name,
+	cost: vars.item[0].cost,
+	quantity: payload.item_count
+})
+else vars.items
+]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</foreach>
+		<set-payload value="#[vars.items]" doc:name="Set Payload" doc:id="d652ab88-dd8e-4026-a53f-dc270e498267" />
 	</sub-flow>
 </mule>
