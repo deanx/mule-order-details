@@ -24,6 +24,6 @@
 | AWS RDS Aurora MySQL | Cloud database solution
 | Anypoint Studio | Mulesoft IDE
 | MUnit | Mulesoft testing framework
-| Mule 4.1.5 | Mule runtime version
+| Mule 4.1.5 | newest Mule runtime version
 
 [CloudHub Console]: <http://mbshop.us-e2.cloudhub.io/console/>
