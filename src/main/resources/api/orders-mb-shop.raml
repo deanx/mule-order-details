@@ -1,22 +1,18 @@
 #%RAML 1.0
-baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/c0361de4-7371-4d06-a3a8-8392f6ec0770/ # 
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/5fe8ba42-040f-466f-a8c3-e62dd264cc9f/ # 
 title: Orders MB Shop
 version: v1
 mediaType: application/json
 uses: 
   types: libraries/types.raml
+  traits: libraries/traits.raml
 /orders:
   /{orderId}:
     uriParameters:
       orderId:
         type: number
     get:
-      headers:
-        X-Correlation-Id:
-          required: false
-          example:
-            943ad48c-5aad-11e9-8647-d663bd873d93
-          description: CorrelationId header. Not mandatory. If not sent, Mule will generate one automatically
+      is: [traits.client-id-required]
       responses:
         200:
           body:
