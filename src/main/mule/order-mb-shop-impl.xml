@@ -61,6 +61,6 @@ else vars.items
 				</ee:variables>
 			</ee:transform>
 		</foreach>
-		<set-payload value="#[vars.items]" doc:name="Set Payload" doc:id="d652ab88-dd8e-4026-a53f-dc270e498267" />
+		<set-payload value="#[vars.items]" doc:name="items to payload" doc:id="d652ab88-dd8e-4026-a53f-dc270e498267" />
 	</sub-flow>
 </mule>
