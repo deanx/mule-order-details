@@ -8,6 +8,7 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="order-mb-shop-impl-test-suite.xml" />
+	<global-property doc:name="Global Property" doc:id="27e336b5-cf2b-4816-8733-6fb29e173769" name="mule.vault.key" value="mulesoft" />
 	<munit:test name="order-mb-shop-impl-test-suite-get-order-by-idTest" description="Test" doc:id="691c10e9-d159-4537-a220-d4af5af08330" expectedErrorType="APP:NOT_FOUND">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock database select with not found value" doc:id="dae2bb59-75e1-4d0d-8035-e80f8f6a765a" processor="db:select">
@@ -17,7 +18,7 @@
 			</munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to get-order-by-id" doc:id="7e61815c-5c91-40ef-91b0-ca14c11fa26d" name="get-order-by-id"/>
+			<flow-ref doc:name="get-order-by-id" doc:id="7e61815c-5c91-40ef-91b0-ca14c11fa26d" name="get-order-by-id"/>
 		</munit:execution>
 	</munit:test>
 	<munit:test name="order-mb-shop-impl-test-suite-get-order-itemsTest" description="Test" doc:id="c41890de-33c5-4c79-ba4e-5d912a8159fc" >
@@ -42,7 +43,7 @@
 			</munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to get-order-items" doc:id="162bd5ca-59e5-4195-be49-017f5685e028" name="get-order-items"/>
+			<flow-ref doc:name="get-order-items" doc:id="162bd5ca-59e5-4195-be49-017f5685e028" name="get-order-items"/>
 		</munit:execution>
 		<munit:validation >
 			<logger level="INFO" doc:name="Logger" doc:id="6988768c-70e9-4b71-ad82-46ec234df237" message="#[payload]"/>
