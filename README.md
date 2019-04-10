@@ -3,13 +3,13 @@
 ### To call the API from CloudHub:
   - go to [CloudHub console]
   - expand /{orderId} item at the left side of the page
-  -- click on the "Get" button below "/orderId"
-  -- click on the "Try it" button
+    - click on the "Get" button below "/orderId"
+    - click on the "Try it" button
   - fill orderId parameter with the value 1 or 2
-  -- Any integer value is accepted, but we have only these 2 order in the database
+    - Any integer value is accepted, but we have only these 2 order in the database
   - Fullfill headers
-  -- ClientId: 1044bd247e6744f99eeff49852c76e81
-  -- ClientSecret: df7cCB13dE7743d6A4454423D830d1a7
+    - ClientId: 1044bd247e6744f99eeff49852c76e81
+    - ClientSecret: df7cCB13dE7743d6A4454423D830d1a7
 
 ### Solution
 
