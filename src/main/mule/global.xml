@@ -13,6 +13,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="62c30af1-67a1-48e6-9fb2-3b9eb1365b8a" keyGenerationExpression="#[vars.orderId]" />
 	<configuration doc:name="Configuration" doc:id="de942608-7c15-4bda-9b9a-a7bb41278f25" defaultErrorHandler-ref="globalError_Handler" />
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0e62915f-403f-432f-b969-a83bc5b4c26b" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
